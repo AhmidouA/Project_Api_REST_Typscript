@@ -5,10 +5,15 @@ import cookieParser from "cookie-parser";
 import compression from "compression";
 import cors from "cors";
 import dotenv from 'dotenv';
+import router from './router'
 
+//db
+import "../config/db"
 
-
+// detenv
 dotenv.config({ path: 'config/.env' });
+
+
 const app = express();
 
 app.use(cors({
@@ -19,10 +24,17 @@ app.use(cors({
 app.use(compression());
 app.use(cookieParser());
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
 
 const server = http.createServer(app);
 
-server.listen(3000, () => {
-    console.log("Server running on localhost:3000");
+app.use('/', router())
+
+server.listen(process.env.PORT, () => {
+    console.log(`Server running on ${process.env.PORT}`);
 });
+
+
+
+
 
